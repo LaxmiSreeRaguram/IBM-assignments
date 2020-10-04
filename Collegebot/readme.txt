@@ -1,0 +1,2 @@
+college bot link:
+https://web-chat.global.assistant.watson.cloud.ibm.com/preview.html?region=us-south&integrationID=ab7a0cf8-fc20-48d2-be7a-aa0112f38daf&serviceInstanceID=c7f1a9b1-5616-4433-875f-d23186a17c74

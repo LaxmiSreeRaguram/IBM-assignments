@@ -1,0 +1,646 @@
+{
+  "intents": [
+    {
+      "intent": "Gender",
+      "examples": [
+        {
+          "text": "Boys"
+        },
+        {
+          "text": "Girls"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "Greetings",
+      "examples": [
+        {
+          "text": "Good Afternoon"
+        },
+        {
+          "text": "Good Evening"
+        },
+        {
+          "text": "Good Morning"
+        },
+        {
+          "text": "Hai"
+        },
+        {
+          "text": "Hello"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "Place",
+      "examples": [
+        {
+          "text": "Bioscience"
+        },
+        {
+          "text": "Canteen"
+        },
+        {
+          "text": "Commerce"
+        },
+        {
+          "text": "Computer science"
+        },
+        {
+          "text": "Hostel"
+        },
+        {
+          "text": "Library"
+        },
+        {
+          "text": "Management"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "gender",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "Boys",
+          "synonyms": [
+            "boy",
+            "gen",
+            "gents"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Girls",
+          "synonyms": [
+            "girl",
+            "ladies",
+            "lady"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "greetings",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "Good Afternoon",
+          "synonyms": [
+            "ga",
+            "Gud Afternoon"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Good Evening",
+          "synonyms": [
+            "ge",
+            "Gud evening",
+            "Gud evng"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Good Morning",
+          "synonyms": [
+            "gm",
+            "Gud Morning",
+            "Gud mrng",
+            "Happy Morning"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Thank you",
+          "synonyms": [
+            "bye",
+            "thank u",
+            "tq"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "places",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "Bioscience",
+          "synonyms": [
+            "biosci",
+            "bio sci"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Canteen",
+          "synonyms": [
+            "cafe",
+            "cafeteria",
+            "mess"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Commerce",
+          "synonyms": [
+            "comm"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Computer science",
+          "synonyms": [
+            "comp sc",
+            "cs"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "department",
+          "synonyms": [
+            "dept"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "hostel",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "Library",
+          "synonyms": [
+            "lib"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Management",
+          "synonyms": [
+            "bba",
+            "mba",
+            "mgmt"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Anything else",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {
+        "_customization": {
+          "mcr": false
+        }
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Anything else",
+      "previous_sibling": "node_9_1601827267064",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Greetings",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#Greetings || @greetings",
+      "dialog_node": "node_10_1601826291282",
+      "previous_sibling": "Welcome"
+    },
+    {
+      "type": "standard",
+      "title": "Hostel type",
+      "parent": "node_9_1601827267064",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#Gender || @gender && @places:hostel",
+      "dialog_node": "node_5_1601829713630"
+    },
+    {
+      "type": "standard",
+      "title": "Enquiry",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#Place || @places",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_9_1601827267064",
+      "previous_sibling": "node_10_1601826291282"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Its in block B first floor."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1601827267064",
+      "conditions": "@places:Bioscience && @places:department",
+      "dialog_node": "response_10_1601828514017",
+      "previous_sibling": "response_6_1601827351619"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "It is the block near temple situated behind the main block"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1601829713630",
+      "conditions": "@gender:Girls",
+      "dialog_node": "response_10_1601830027105"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "It is in the back to this building."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1601827267064",
+      "conditions": "@places:Canteen",
+      "dialog_node": "response_1_1601829521799",
+      "previous_sibling": "response_5_1601829224567"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hi"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1601826291282",
+      "conditions": "anything_else",
+      "dialog_node": "response_1_1601830803949",
+      "previous_sibling": "response_6_1601830717928"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Good Evening"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1601826291282",
+      "conditions": "@greetings:(Good Evening)",
+      "dialog_node": "response_2_1601826592019",
+      "previous_sibling": "response_7_1601826575774"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "It is the block next to the canteen"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1601829713630",
+      "conditions": "@gender:Boys",
+      "dialog_node": "response_2_1601830116638",
+      "previous_sibling": "response_10_1601830027105"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "title": "Select Gender:",
+            "options": [
+              {
+                "label": "Boys",
+                "value": {
+                  "input": {
+                    "text": "boys"
+                  }
+                }
+              },
+              {
+                "label": "Girls",
+                "value": {
+                  "input": {
+                    "text": "girls"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_9_1601827267064",
+      "conditions": "@places:hostel",
+      "dialog_node": "response_4_1601829564213",
+      "previous_sibling": "response_1_1601829521799"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Its in the fourth building from here. A hexagon shaped pink building towards the left from here."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1601827267064",
+      "conditions": "@places:Library",
+      "dialog_node": "response_5_1601829224567",
+      "previous_sibling": "response_9_1601828682419"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "It is in block A second floor."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1601827267064",
+      "conditions": "@places:(Computer science) && @places:department",
+      "dialog_node": "response_6_1601827351619",
+      "previous_sibling": "node_5_1601829713630"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Its in block C first floor."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1601827267064",
+      "conditions": "@places:Commerce && @places:department",
+      "dialog_node": "response_6_1601828588032",
+      "previous_sibling": "response_10_1601828514017"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Thanks for using me. Have a great day."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1601826291282",
+      "conditions": "@greetings:(Thank you)",
+      "dialog_node": "response_6_1601830717928",
+      "previous_sibling": "response_2_1601826592019"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Good Afternoon"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1601826291282",
+      "conditions": "@greetings:(Good Afternoon)",
+      "dialog_node": "response_7_1601826575774",
+      "previous_sibling": "response_8_1601826515687"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "Anything else",
+      "disabled": true,
+      "conditions": "anything_else",
+      "dialog_node": "response_7_1601830527774"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Good Morning"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1601826291282",
+      "conditions": "@greetings:(Good Morning)",
+      "dialog_node": "response_8_1601826515687"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Its in block C third floor"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1601827267064",
+      "conditions": "@places:Management && @places:department",
+      "dialog_node": "response_9_1601828682419",
+      "previous_sibling": "response_6_1601828588032"
+    },
+    {
+      "type": "standard",
+      "title": "Welcome",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hello. Welcome to College bot. How can I help you?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "off_topic": {
+      "enabled": true
+    },
+    "disambiguation": {
+      "prompt": "Did you mean:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "None of the above"
+    },
+    "system_entities": {
+      "enabled": true
+    },
+    "human_agent_assist": {
+      "prompt": "Did you mean:"
+    },
+    "spelling_auto_correct": true
+  },
+  "learning_opt_out": false,
+  "name": "College Bot",
+  "language": "en",
+  "description": ""
+}
